@@ -13,19 +13,28 @@ export default function Home() {
     const calculateTimeLeft = () => {
       const now = new Date();
       const nextWeek = new Date(now);
+      
+      // Set to next week at midnight
       nextWeek.setDate(now.getDate() + 7);
       nextWeek.setHours(0, 0, 0, 0);
       
       const difference = nextWeek.getTime() - now.getTime();
       
+      // Calculate time components
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+      
       setTimeLeft({
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60)
+        days,
+        hours,
+        minutes,
+        seconds
       });
     };
 
+    // Calculate immediately and then every second
     calculateTimeLeft();
     const timer = setInterval(calculateTimeLeft, 1000);
 
